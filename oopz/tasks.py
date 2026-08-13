@@ -33,7 +33,9 @@ def login() -> tuple[str, str]:
     if result.get("status"):
         data = result["data"]
         return data["signature"], data["uid"]
-    raise RuntimeError("登录失败: " + json.dumps(result, ensure_ascii=False))
+    if "_http_error" in result:
+        raise RuntimeError(f"HTTP {result['_http_error']}")
+    raise RuntimeError(str(result.get("message") or result.get("code") or "未知错误"))
 
 
 def get_monthly_detail(jwt: str, uid: str) -> dict:
