@@ -66,7 +66,7 @@ def run() -> int:
 
     steps = [
         ("签到", tasks.sign_in),
-        ("打开商店", tasks.open_shop),
+        ("打开商城", tasks.open_shop),
         ("领取每日任务", tasks.claim_daily_task),
     ]
     for title, fn in steps:

@@ -48,11 +48,19 @@ def sign_in(jwt: str, uid: str) -> dict:
     return client.http("POST", "/uni/activity/monthlyTask/v1/signIn", "{}", jwt, uid)
 
 
-def open_shop(jwt: str, uid: str, blind_box_id: int = 6) -> dict:
-    """打开商店（每日任务「进入商城」的前置）。"""
-    return client.http(
-        "GET", f"/uni/blind_box_rank/v1/entry?blindBoxID={blind_box_id}", jwt=jwt, uid=uid
-    )
+def open_shop(jwt: str, uid: str, tab_type: str = "FEATURE") -> dict:
+    """打开商城 —— 每日任务「进入一次商城」的触发动作。
+
+    该任务在月度活动详情里的定义是：
+        taskId=30003, taskType=ENTER_SHOP, uri=oopz://oopz.route/mall/browser
+    对应的接口就是 GET /uni/shop/v1/mall，必须调它服务端才会记录进度。
+
+    注意：旧版这里调用的是 /uni/blind_box_rank/v1/entry（盲盒排行榜入口）。
+    那个接口仍然存在并且返回 200，但它属于排行榜模块，不会推进 ENTER_SHOP
+    任务，任务会一直停在 state=0，随后领奖时返回
+    「不满足领取条件」（ERR.022.00002）。
+    """
+    return client.http("GET", f"/uni/shop/v1/mall?tabType={tab_type}", jwt=jwt, uid=uid)
 
 
 def claim_daily_task(jwt: str, uid: str, task_id: int = 30003) -> dict:

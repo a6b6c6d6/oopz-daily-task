@@ -36,7 +36,8 @@ PASSWORD = os.environ.get("OOPZ_PASSWORD", "")
 DEVICE_ID = os.environ.get("OOPZ_DEVICE_ID", "")
 
 # 客户端版本号（对应 oopz-app-version-number 头）
-APP_VERSION = os.environ.get("OOPZ_APP_VERSION", "85914")
+# 取自 web.oopz.cn 当前前端实际发出的请求头，如前端升级需同步更新。
+APP_VERSION = os.environ.get("OOPZ_APP_VERSION", "88053")
 
 # 平台 / 渠道
 PLATFORM = os.environ.get("OOPZ_PLATFORM", "windows")
